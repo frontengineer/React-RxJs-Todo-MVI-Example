@@ -1,0 +1,21 @@
+*.sw*
+*~
+
+# Logs and databases #
+######################
+*.log
+
+# OS generated files #
+######################
+node_modules/
+public
+.tmp
+.idea
+client/bower_components
+dist
+.DS_Store
+.DS_Store
+._*
+ehthumbs.db
+Thumbs.db
+src/server/config/local.env.js
