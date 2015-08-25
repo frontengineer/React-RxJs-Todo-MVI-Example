@@ -3,13 +3,16 @@
   "version": "1.0.0",
   "description": "Basic isomorphic React App",
   "scripts": {
-    "build": "webpack -p --config webpack.config.production",
-    "dev": "NODE_ENV=development node src/server/webpack & NODE_ENV=development node server",
-    "start": "NODE_ENV=production node  --harmony server",
-    "test": "jest"
+    "build": "npm run clean && ./node_modules/.bin/babel src -d lib --experimental --optional es7.decorators && webpack -p --config webpack.config.production",
+    "clean": "rm -rf lib",
+    "dev": "npm run clean && npm run dev-server",
+    "dev-server": "NODE_ENV=development node  --harmony hotWebpack",
+    "start": "NODE_ENV=production node --harmony ./lib/server"
   },
   "author": "David Parnell",
   "dependencies": {
+    "baobab": "^1.1.1",
+    "baobab-react": "^0.1.1",
     "body-parser": "~1.5.0",
     "compression": "~1.0.1",
     "cors": "^2.6.0",

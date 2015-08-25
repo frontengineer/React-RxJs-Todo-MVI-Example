@@ -1,10 +1,13 @@
 var webpack = require('webpack');
+var path = require('path');
+
 
 module.exports = {
+  devtool: 'eval',
   entry: [
     'webpack-dev-server/client?http://localhost:8080',
     'webpack/hot/only-dev-server',
-    './src/client/entry'
+    './src/index'
   ],
   output : {
     path      : __dirname + '/bundle/',
@@ -16,15 +19,21 @@ module.exports = {
     new webpack.NoErrorsPlugin()
   ],
   resolve: {
-    extensions : ['', '.js']
+    extensions : ['', '.js', '.jsx']
   },
   module: {
     loaders : [
       {
         test: /\.js?$/,
-        loaders: ['react-hot', 'jsx-loader?harmony', 'babel-loader'],
-        exclude: /node_modules/
-      }
+        loaders: ['react-hot', 'babel?optional[]=runtime&stage=1'],
+        exclude: /node_modules|bower_components/
+      },
+      {
+        test: /\.jsx?$/,
+        loaders: ['react-hot', 'babel?optional[]=runtime&stage=1'],
+        exclude: /node_modules|bower_components/
+      },
+      { test: /\.handlebars$/, loader: "handlebars-loader" }
     ]
   }
 };

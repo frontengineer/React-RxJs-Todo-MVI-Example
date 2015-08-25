@@ -7,6 +7,9 @@
 <body>
 
   <div id="app">{{{content}}}</div>
-    <script src="{{{bundlePath}}}" defer></script>
+  <script type="text/javascript">
+    window.store = {{{json store}}}
+  </script>
+  <script src="{{{bundlePath}}}" defer></script>
 </body>
 </html>

@@ -2,10 +2,10 @@ var webpack = require('webpack');
 
 module.exports = {
   entry: [
-    './src/client/entry'
+    './lib/index'
   ],
   output : {
-    path      : __dirname + '/dist/bundle/',
+    path      : __dirname + '/lib/dist/bundle/',
     filename  : 'bundle.js'
   },
   plugins : [
@@ -25,7 +25,7 @@ module.exports = {
     loaders : [
       {
         test: /\.js?$/,
-        loaders: ['react-hot', 'jsx-loader?harmony', 'babel-loader'],
+        loaders: ['jsx-loader?harmony', 'babel?optional[]=runtime&stage=1'],
         exclude: /node_modules/
       }
     ]
