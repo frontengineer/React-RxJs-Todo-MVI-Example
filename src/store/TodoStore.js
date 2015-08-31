@@ -3,6 +3,7 @@ var Action = require('../constants/IntentTypes');
 var TodoIntents = require('../intents/TodoIntents');
 var assign = require('../utils/assign');
 var TodoFilters = require('../shared/TodoFilters');
+var StoreFilterChannel = new Rx.BehaviorSubject(Action.ALL);
 
 const TodoFilterIntents = TodoFilters.getIntent();
 const FILTER_BY = {};
@@ -16,26 +17,18 @@ var id = (initialTodos.length === 0) ? 0 : initialTodos[initialTodos.length - 1]
 var todoTicker = new Rx.BehaviorSubject(initialTodos);
 
 // add as Subject
-// TodoIntents.subscribe(todoInserts.s);
-var _todos = todoTicker.
+var unfilteredTodos = todoTicker.
 scan(function (list, operation) {
   var result =  operation(list);
   return result;
 });
 
-var sg = Rx.Observable.combineLatest(_todos, TodoFilterIntents, function (todos, filterBy) {
-  // console.log('todos', todos, 'filterBy', filterBy);
+var _todos = Rx.Observable.combineLatest(unfilteredTodos, TodoFilterIntents, function (todos, filterBy) {
   return todos.filter(function (todo) {
-    // console.log('filter using', filterBy.payload, todo);
-    // console.log('filtering', FILTER_BY[filterBy.payload], todo);
+    StoreFilterChannel.onNext(filterBy.payload);
     return FILTER_BY[filterBy.payload](todo.complete);
   });
 });
-// .subscribe(function (argument) {
-//   console.log('sg', argument);
-// })
-
-
 
 var createTodo = TodoIntents.filter(function (action) {
   return action.intent === Action.CREATE_TODO;
@@ -96,4 +89,7 @@ Rx.Observable.
   merge(createTodo, deleteTodo, editTodo, markTodo, markAll).
   subscribe(todoTicker);
 
-module.exports = sg;
+// quick hack to pass active filter button state for render
+_todos.StoreFilterChannel = StoreFilterChannel;
+
+module.exports = _todos;

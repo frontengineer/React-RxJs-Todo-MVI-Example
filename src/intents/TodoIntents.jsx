@@ -1,15 +1,14 @@
 import Rx from 'rx-lite';
-import TodoInput from '../shared/TodoInput';
+import Header from '../shared/Header';
 import TodoList from '../shared/TodoList';
 import Footer from '../shared/Footer';
 import Action from '../constants/IntentTypes';
-import TodoFilters from '../shared/TodoFilters';
 
-const TodoInputIntent = TodoInput.getIntent();
+const HeaderIntent = Header.getIntent();
 const TodoListIntent = TodoList.getIntent();
 const FooterIntent = Footer.getIntent();
 
-const createTodo = TodoInputIntent.
+const createTodo = HeaderIntent.
   map(function (text) {
     return { intent: Action.CREATE_TODO, payload: text }
   });

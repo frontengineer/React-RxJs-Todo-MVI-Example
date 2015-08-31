@@ -7,7 +7,7 @@ import Footer from './Footer';
 let TodoListIntent = new Rx.Subject();
 let rowStyle = {position:'relative'};
 
-let TodoList = React.createClass({
+const TodoList = React.createClass({
 
   statics : {
     getIntent : function () {
@@ -16,7 +16,7 @@ let TodoList = React.createClass({
   },
 
   getInitialState : function (argument) {
-    var self = this;
+    let self = this;
     return {
       inputId: undefined,
       inputText: undefined,
@@ -25,20 +25,19 @@ let TodoList = React.createClass({
         self.setState({ inputId: undefined, inputText: undefined});
       }),
       removeBatch : []
-
     }
   },
 
   render: function(){
-    var self = this;
-    var isMarkedCSS = {'text-decoration' : 'line-through'};
-    var list = this.props.todoData.map(function(todo) {
+    let self = this;
+    let isMarkedCSS = {'text-decoration' : 'line-through'};
+    let list = this.props.todoData.map(function(todo) {
       return (
         <li
           style={rowStyle}
           onDoubleClick={self.editTodo.bind(self, todo)}
           key={todo.id}>
-          <input type="checkbox" onChange={self.toggleTodo.bind(self, todo)} />
+          <input type="checkbox" onChange={self.toggleTodo.bind(self, todo)} checked={(todo.complete !== true) ? null : 'checked'} />
             {self.state.inputId === todo.id ?
               <TodoItem id='editableTodo' todo={todo} /> :
                 <span style={todo.complete ? isMarkedCSS : {}}>{todo.text}</span>}
@@ -46,12 +45,14 @@ let TodoList = React.createClass({
         </li>
       )
     });
+
     return (
-      <div>
-        <ul>
+      <section className="main">
+        <input className="toggle-all" type="checkbox" onChange={self.toggleAll}/>
+        <ul className="todo-list">
           {list}
         </ul>
-      </div>
+      </section>
     )
   },
 
@@ -65,6 +66,10 @@ let TodoList = React.createClass({
 
   toggleTodo : function(elementKey){
     TodoListIntent.onNext({ intent: IntentConstants.MARK_TODO, payload: elementKey.id});
+  },
+
+  toggleAll : function(elementKey){
+    TodoListIntent.onNext({ intent: IntentConstants.MARK_ALL, payload: elementKey.target.checked});
   }
 });
 

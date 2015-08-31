@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
 import Rx from 'rx-lite';
 import ReactRenderVisualizer from 'react-render-visualizer';
-// import TodoActions from '../actions/TodoActions'
-// var ContextMixin = require('./ContextMixin');
 
 let TodoInputIntent = new Rx.Subject();
 
-let TodoInput = React.createClass({
-  mixins: [ReactRenderVisualizer],
+const TodoInput = React.createClass({
+  // mixins: [ReactRenderVisualizer],
 
   statics : {
     getIntent : function () {
@@ -16,24 +14,16 @@ let TodoInput = React.createClass({
   },
 
   getInitialState : function () {
-    console.log('initial props', this.props);
     return {
       inputValue : this.props.todo.text
     }
   },
-  // componentDidMount
-  // mixins: [ContextMixin],
-
-  // cursors : {
-  //   todos: ['todos']
-  // },
-
 
   componentDidMount : function () {
-    var self = this;
-    var source = new Rx.Observable.fromEvent(document.getElementById(this.props.id), 'keyup');
+    let self = this;
+    let source = new Rx.Observable.fromEvent(document.getElementById(this.props.id), 'keyup');
 
-    var enters = source.
+    let enters = source.
     filter(function (todoInput) {
       return (todoInput.target.value !='') && (todoInput.keyCode === 13);
     }).
@@ -46,7 +36,7 @@ let TodoInput = React.createClass({
   },
 
   render: function(){
-    var fieldOptions = this.props.options;
+    let fieldOptions = this.props.options;
     return (
       <input type="text"
         id={this.props.id}

@@ -4,7 +4,7 @@ import ReactRenderVisualizer from 'react-render-visualizer';
 
 let TodoInputIntent = new Rx.Subject();
 
-let TodoInput = React.createClass({
+const Header = React.createClass({
   statics : {
     getIntent : function () {
       return TodoInputIntent;
@@ -29,14 +29,15 @@ let TodoInput = React.createClass({
   },
 
   render: function(){
-    var fieldOptions = this.props.options;
+    let fieldOptions = this.props.options;
     fieldOptions.type = 'text';
     return (
-      <div>
-        {React.createElement('input', fieldOptions)}
-      </div>
+      <header className="header">
+        <h1>Todos</h1>
+          {React.createElement('input', fieldOptions)}
+      </header>
     )
   }
 });
 
-module.exports = TodoInput;
+module.exports = Header;

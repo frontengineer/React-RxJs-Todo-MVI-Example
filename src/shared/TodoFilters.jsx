@@ -4,9 +4,7 @@ import FILTER_BY from '../constants/IntentTypes';
 let initialFilter = { intent: 'FILTER_BY', payload: FILTER_BY.ALL }
 let TodoFilterIntent = new Rx.BehaviorSubject(initialFilter);
 
-let css = { padding: '0 20px 0 0 ', textTransform : 'capitalize'};
-let css1 = { padding: '0 20px 0 0 ', textTransform : 'capitalize'};
-let css2 = { padding: '0 20px 0 0 ', textTransform : 'capitalize'};
+let css = { padding: '3px 8px 0 0 ', border : 'solid 1px #dddddd', marginRight: 10};
 
 const TodoFilters = React.createClass({
 
@@ -16,13 +14,26 @@ const TodoFilters = React.createClass({
     }
   },
 
+  getInitialState : function () {
+    return {
+      activeButton : ''
+    }
+  },
+
+  componentDidMount : function () {
+    let self = this;
+    this.props.filterChannel.subscribe(function (currentFilter) {
+      self.setState({ activeButton : currentFilter});
+    });
+  },
+
   render : function () {
     return (
-      <div>
-        <a style={css} onClick={this.toggleAll.bind(this, FILTER_BY.ALL)}>All</a>
-        <a style={css1} onClick={this.toggleAll.bind(this, FILTER_BY.DO)}>To Do</a>
-        <a style={css2} onClick={this.toggleAll.bind(this, FILTER_BY.DID)}>Did</a>
-      </div>
+      <ul className="filters">
+        <li><a onClick={this.toggleAll.bind(this, FILTER_BY.ALL)} className={ (this.state.activeButton === FILTER_BY.ALL) ? 'selected': ''}>All</a></li>
+        <li><a onClick={this.toggleAll.bind(this, FILTER_BY.DO)} className={ (this.state.activeButton === FILTER_BY.DO) ? 'selected': ''}>To Do</a></li>
+        <li><a onClick={this.toggleAll.bind(this, FILTER_BY.DID)} className={ (this.state.activeButton === FILTER_BY.DID) ? 'selected': ''}>Did</a></li>
+      </ul>
     )
   },
 
